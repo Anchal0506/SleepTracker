@@ -12,51 +12,72 @@ let recordIdCounter = 1;
 
 // API Endpoints
 
-// POST /sleep
+// POST /sleep 
+// can add new record with timestamp and duration
 app.post('/sleep', (req, res) => {
-  const { userId, hours, timestamp } = req.body;
 
-  if (!userId || !hours || !timestamp) {
-    return res.status(400).json({ error: 'userId, hours, and timestamp are required' });
-  }
+    // grab user id , hours and timestamp from body
+    const { userId, hours, timestamp } = req.body;
 
-  const newRecord = {
-    id: recordIdCounter++,
-    userId,
-    hours,
-    timestamp
-  };
+    // if any one of them is missing , send a error
+    if (!userId || !hours || !timestamp) {
+        return res.status(400).json({ error: 'userId, hours, and timestamp are required' });
+    }
 
-  sleepRecords.push(newRecord);
-  res.status(201).json(newRecord);
+    // make a new record
+    const newRecord = {
+        id: recordIdCounter++,
+        userId,
+        hours,
+        timestamp
+    };
+
+    // add new record to records 
+    sleepRecords.push(newRecord);
+
+    // send status 201 and added record 
+    res.status(201).json(newRecord);
 });
 
 // GET /sleep/:userId
+// get all records with specific user id
 app.get('/sleep/:userId', (req, res) => {
+    // grad user id from params 
     const userId = req.params.userId;
-    const userRecords = sleepRecords
-                                  .filter(record => record.userId === userId)
-                                  .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
-  
-    res.json(userRecords);
-  });
-  
-  // DELETE /sleep/:recordId
-  app.delete('/sleep/:recordId', (req, res) => {
-    const recordId = parseInt(req.params.recordId);
-    const recordIndex = sleepRecords.findIndex(record => record.id === recordId);
-  
-    if (recordIndex === -1) {
-      return res.status(404).json({ error: 'Record not found' });
-    }
-  
-    sleepRecords.splice(recordIndex, 1);
-    res.status(204).send();
-  });
 
-  
+    // get user records with user id and sort them by date
+    const userRecords = sleepRecords
+        .filter(record => record.userId === userId)
+        .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+    // return array of records 
+    res.json(userRecords);
+});
+
+// DELETE /sleep/:recordId
+// delete particular record with record id
+app.delete('/sleep/:recordId', (req, res) => {
+    // grab a record id from params
+    const recordId = parseInt(req.params.recordId);
+
+    // find record index using record id 
+    const recordIndex = sleepRecords.findIndex(record => record.id === recordId);
+
+    // if no record is found return error 
+    if (recordIndex === -1) {
+        return res.status(404).json({ error: 'Record not found' });
+    }
+
+    // remove record using record index 
+    sleepRecords.splice(recordIndex, 1);
+
+    // return 204 status for success 
+    res.status(204).send();
+});
+
+
 
 // Start the server
 app.listen(port, () => {
-  console.log(`API listening at http://localhost:${port}`);
+    console.log(`API listening at http://localhost:${port}`);
 });
