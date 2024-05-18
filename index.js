@@ -24,6 +24,17 @@ app.post('/sleep', (req, res) => {
         return res.status(400).json({ error: 'userId, hours, and timestamp are required' });
     }
 
+    // function to check valid timestamp 
+    function isValidTimestamp(timestamp) {
+        const date = new Date(timestamp);
+        return !isNaN(date.getTime()) && !isNaN(new Date(Number(timestamp)).getTime());
+    }
+    
+    // Check if the timestamp is a valid number or a valid date string
+    if(!isValidTimestamp(timestamp)){
+        return res.status(400).json({ error: 'Time Stamp is not valid.' });
+    }
+
     // make a new record
     const newRecord = {
         id: recordIdCounter++,
