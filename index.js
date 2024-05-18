@@ -31,6 +31,31 @@ app.post('/sleep', (req, res) => {
   res.status(201).json(newRecord);
 });
 
+// GET /sleep/:userId
+app.get('/sleep/:userId', (req, res) => {
+    const userId = req.params.userId;
+    const userRecords = sleepRecords
+                                  .filter(record => record.userId === userId)
+                                  .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+  
+    res.json(userRecords);
+  });
+  
+  // DELETE /sleep/:recordId
+  app.delete('/sleep/:recordId', (req, res) => {
+    const recordId = parseInt(req.params.recordId);
+    const recordIndex = sleepRecords.findIndex(record => record.id === recordId);
+  
+    if (recordIndex === -1) {
+      return res.status(404).json({ error: 'Record not found' });
+    }
+  
+    sleepRecords.splice(recordIndex, 1);
+    res.status(204).send();
+  });
+
+  
+
 // Start the server
 app.listen(port, () => {
   console.log(`API listening at http://localhost:${port}`);
