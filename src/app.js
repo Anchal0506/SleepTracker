@@ -14,6 +14,12 @@ app.locals.sleepRecords = sleepRecords;
 
 // API Endpoints
 
+app.get("/",(req,res)=>{
+  return res.status(200).json({
+    msg : "Welcome to Sleep Tracker";
+  })
+})
+
 // POST /sleep
 // can add new record with timestamp and duration
 app.post("/sleep", (req, res) => {
