@@ -34,17 +34,20 @@ app.post("/sleep", (req, res) => {
   }
 
   // function to check valid timestamp
-  function isValidIsoTimestamp(input) {
-    // Regular expression to match ISO 8601 date string
-    const iso8601Regex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?Z$/;
+  function isValidIsoTimestamp(timestamp) {
+
+    const iso8601Regex = /^(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?(Z|([+-]\d{2}:\d{2})))$/;
   
-    // Check if the input matches the ISO 8601 format
-    if (iso8601Regex.test(input)) {
-      const date = new Date(input);
-      return date.toISOString() === input;
+    if (!iso8601Regex.test(timestamp)) {
+      return false;
+    } else {
+      const date = new Date(timestamp);
+      if (isNaN(date.getTime())) {
+        return false;
+      }
     }
   
-    return false;
+    return true;
   }
 
   // Check if the timestamp is a valid number or a valid date string
