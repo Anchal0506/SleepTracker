@@ -16,7 +16,7 @@ app.locals.sleepRecords = sleepRecords;
 
 app.get("/",(req,res)=>{
   return res.status(200).json({
-    msg : "Welcome to Sleep Tracker";
+    msg : "Welcome to Sleep Tracker"
   })
 })
 
