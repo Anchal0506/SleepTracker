@@ -85,7 +85,7 @@ describe("Route /sleep/:recordId Testing", () => {
     });
   });
 
-  it("It does not have any post route", (done) => {
+  it("It does not have any POST METHOD", (done) => {
     const sampleData = helper.sampleSleepRecord("1");
     const sampleId = 1;
     chai
@@ -98,7 +98,7 @@ describe("Route /sleep/:recordId Testing", () => {
       });
   });
 
-  it("It does not have any put route", (done) => {
+  it("It does not have any PUT METHOD", (done) => {
     const sampleData = helper.sampleSleepRecord("1");
     const sampleId = 1;
     chai
