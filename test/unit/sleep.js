@@ -6,6 +6,12 @@ const helper = require("../helpers/helper.js");
 chai.use(chaiHttp);
 const { expect } = chai;
 describe("Post Method /sleep Testing", () => {
+  
+  beforeEach(() => {
+    // Resetting Records
+    app.locals.sleepRecords.splice(0, app.locals.sleepRecords.length);
+  });
+
   it("should be able to add sleep record", (done) => {
     chai
       .request(app)
