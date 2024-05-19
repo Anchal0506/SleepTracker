@@ -28,16 +28,21 @@ app.post("/sleep", (req, res) => {
   }
 
   // function to check valid timestamp
-  function isValidTimestamp(timestamp) {
-    if (typeof timestamp === 'number' || typeof timestamp === 'string') {
-      const date = new Date(timestamp);
-      return date instanceof Date && !isNaN(date.getTime());
+  function isValidIsoTimestamp(input) {
+    // Regular expression to match ISO 8601 date string
+    const iso8601Regex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?Z$/;
+  
+    // Check if the input matches the ISO 8601 format
+    if (typeof input === 'string' && iso8601Regex.test(input)) {
+      const date = new Date(input);
+      return date.toISOString() === input;
     }
+  
     return false;
   }
 
   // Check if the timestamp is a valid number or a valid date string
-  if (!isValidTimestamp(timestamp)) {
+  if (!isValidIsoTimestamp(timestamp)) {
     return res.status(400).json({ error: "Time Stamp is not valid." });
   }
 
