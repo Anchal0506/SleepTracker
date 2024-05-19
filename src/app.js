@@ -39,7 +39,7 @@ app.post("/sleep", (req, res) => {
     const iso8601Regex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?Z$/;
   
     // Check if the input matches the ISO 8601 format
-    if (typeof input === 'string' && iso8601Regex.test(input)) {
+    if (iso8601Regex.test(input)) {
       const date = new Date(input);
       return date.toISOString() === input;
     }
