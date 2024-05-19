@@ -6,9 +6,26 @@ const helper = require("../helpers/helper.js");
 chai.use(chaiHttp);
 const { expect } = chai;
 
-describe("Get Method /sleep/:userId Testing", () => {
+describe("Route /sleep/:userId Testing", () => {
   beforeEach(() => {
     app.locals.sleepRecords.splice(0, app.locals.sleepRecords.length);
+  });
+
+  it("It retrieves array of records", (done) => {
+    const userId = "1";
+    const count = 10;
+    const sampleRecords = helper.getArrayOfSleepRecord(userId, count);
+    postRecord(sampleRecords).then((res) => {
+      chai
+        .request(app)
+        .get(`/sleep/${userId}`)
+        .end((err, res) => {
+          expect(err).to.be.null;
+          expect(res).to.have.status(200);
+          expect(res.body).to.be.an("array");
+        });
+      done();
+    });
   });
 
   it("It should be able retrieve all record posted by user", (done) => {
@@ -119,6 +136,44 @@ describe("Get Method /sleep/:userId Testing", () => {
       done();
     });
   });
+
+  it("It does not have any PUT METHOD", (done) => {
+    const userId = "1";
+    const sampleData = helper.sampleSleepRecord(userId);
+    chai
+      .request(app)
+      .put(`/sleep/${userId}`)
+      .send(sampleData)
+      .end((err, res) => {
+        expect(res).to.have.status(404);
+        done();
+      });
+  });
+
+  it("It does not have any POST METHOD", (done) => {
+    const userId = "1";
+    const sampleData = helper.sampleSleepRecord(userId);
+    chai
+      .request(app)
+      .post(`/sleep/${userId}`)
+      .send(sampleData)
+      .end((err, res) => {
+        expect(res).to.have.status(404);
+        done();
+      });
+  });
+
+  it("It does not have any DELETE METHOD", (done) => {
+    const userId = "1";
+    chai
+      .request(app)
+      .delete(`/sleep/${userId}`)
+      .end((err, res) => {
+        expect(res).to.have.status(404);
+        done();
+      });
+  });
+  
 });
 
 function postRecord(recordsToPost) {

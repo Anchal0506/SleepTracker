@@ -5,14 +5,14 @@ const helper = require("../helpers/helper.js");
 
 chai.use(chaiHttp);
 const { expect } = chai;
-describe("Post Method /sleep Testing", () => {
-  
+
+describe("Route /sleep Testing", () => {
   beforeEach(() => {
     // Resetting Records
     app.locals.sleepRecords.splice(0, app.locals.sleepRecords.length);
   });
 
-  it("should be able to add sleep record", (done) => {
+  it("It should be able to add sleep record", (done) => {
     chai
       .request(app)
       .post("/sleep")
@@ -29,7 +29,8 @@ describe("Post Method /sleep Testing", () => {
         done();
       });
   });
-  it("cannot record sleep if no data passed", (done) => {
+
+  it("It cannot record sleep if no data passed", (done) => {
     chai
       .request(app)
       .post("/sleep")
@@ -41,7 +42,8 @@ describe("Post Method /sleep Testing", () => {
         done();
       });
   });
-  it("userId is required  to record sleep", (done) => {
+
+  it("It required userId  to record sleep", (done) => {
     const sleepRecordWithoutUserId = helper.sampleSleepRecord();
     delete sleepRecordWithoutUserId["hours"];
     chai
@@ -56,7 +58,8 @@ describe("Post Method /sleep Testing", () => {
         done();
       });
   });
-  it("timestamp is required to record sleep", (done) => {
+
+  it("It required timestamp to record sleep", (done) => {
     const sleepRecordWithoutTimestamp = helper.sampleSleepRecord();
     delete sleepRecordWithoutTimestamp["timestamp"];
     chai
@@ -71,7 +74,8 @@ describe("Post Method /sleep Testing", () => {
         done();
       });
   });
-  it("hours is required to record sleep", (done) => {
+
+  it("It requires hours to record sleep", (done) => {
     const sleepRecordWithoutHours = helper.sampleSleepRecord();
     delete sleepRecordWithoutHours["hours"];
     chai
@@ -86,4 +90,37 @@ describe("Post Method /sleep Testing", () => {
         done();
       });
   });
+
+  it("It does not have any PUT METHOD", (done) => {
+    const sampleData = helper.sampleSleepRecord("1");
+    chai
+      .request(app)
+      .put(`/sleep`)
+      .send(sampleData)
+      .end((err, res) => {
+        expect(res).to.have.status(404);
+        done();
+      });
+  });
+
+  it("It does not have any GET METHOD", (done) => {
+    chai
+      .request(app)
+      .get(`/sleep`)
+      .end((err, res) => {
+        expect(res).to.have.status(404);
+        done();
+      });
+  });
+
+  it("It does not have any DELETE METHOD", (done) => {
+    chai
+      .request(app)
+      .delete(`/sleep`)
+      .end((err, res) => {
+        expect(res).to.have.status(404);
+        done();
+      });
+  });
+  
 });
