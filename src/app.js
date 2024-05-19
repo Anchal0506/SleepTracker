@@ -29,10 +29,11 @@ app.post("/sleep", (req, res) => {
 
   // function to check valid timestamp
   function isValidTimestamp(timestamp) {
-    const date = new Date(timestamp);
-    return (
-      !isNaN(date.getTime()) && !isNaN(new Date(Number(timestamp)).getTime())
-    );
+    if (typeof timestamp === 'number' || typeof timestamp === 'string') {
+      const date = new Date(timestamp);
+      return date instanceof Date && !isNaN(date.getTime());
+    }
+    return false;
   }
 
   // Check if the timestamp is a valid number or a valid date string
