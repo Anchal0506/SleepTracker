@@ -115,7 +115,7 @@ curl --location 'http://localhost:3000/sleep' \
 
 ```json
 {
-    error: "userId, hours, and timestamp are required" 
+    "error": "userId, hours, and timestamp are required" 
 }
 ```
 </td>
